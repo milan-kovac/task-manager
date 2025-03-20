@@ -8,13 +8,19 @@ import (
 
 	//  _ initialization only
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
 type Database struct {
 	DB *sql.DB
 }
 
-func (db *Database) Connect(){
+func (db *Database) Initialize(){
+	db.connect()   
+	defer db.close()
+}
+
+func (db *Database) connect(){
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbHost := os.Getenv("DB_HOST")
@@ -38,7 +44,8 @@ func (db *Database) Connect(){
 	db.DB = connection
 }
 
-func (db * Database) Close(){
+
+func (db * Database) close(){
 	if db.DB !=nil{
 		err := db.DB.Close()
 

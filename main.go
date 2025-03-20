@@ -1,16 +1,17 @@
 package main
 
 import (
+	"github.com/gofiber/fiber"
 	"github.com/task-manager/config"
 	"github.com/task-manager/database"
 )
 
 func main() {
+	app := fiber.New()
 	config.ConfigureApp()
 
 	db := &database.Database{}
-	db.Connect()
+	db.Initialize()
 
-
-	defer db.Close()
+	app.Listen(":3000")
 }
