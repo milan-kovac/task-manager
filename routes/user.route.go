@@ -12,6 +12,11 @@ func RegisterUserRoutes(app *fiber.App) {
 
 	userRoutes.Post(
 		"/register",
-		 middlewares.ValidateBody[dtos.RegisterRequest](), 
-		 controllers.RegisterUser)
+		middlewares.ValidateBody[dtos.RegisterRequest](),
+		controllers.Register)
+
+	userRoutes.Post(
+		"/login",
+		middlewares.ValidateBody[dtos.LoginRequest](),
+		controllers.Login)
 }
