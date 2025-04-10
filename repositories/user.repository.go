@@ -1,27 +1,35 @@
 package repositories
 
 import (
+	"github.com/task-manager/types"
+
 	"github.com/task-manager/database"
 	"github.com/task-manager/models"
 )
 
+func CreateUser(user *models.User) (*models.User, error) {
+	if err := database.DB.Create(user).Error; err != nil {
+		return nil, err
+	}
 
-func  Create(user *models.User) (*models.User, error) {
-    if err := database.DB.Create(user).Error; err != nil {
-        return nil, err
-    }
-
-    return user, nil
+	return user, nil
 }
 
+func GetUserCredentialsByEmail(email string) (types.JWTUser, error) {
+	var user models.User
 
-func GetPasswordByEmail(email string) (string, error) {
-    var password string
-    err := database.DB.Model(&models.User{}).Where("email = ?", email).Select("password").Scan(&password).Error
-    if err != nil {
-        return "", err
-    }
+	err := database.DB.Model(&models.User{}).
+		Where("email = ?", email).
+		Select("id, email, password").
+		First(&user).Error
 
-    return password, nil
+	if err != nil {
+		return types.JWTUser{}, err
+	}
+
+	return types.JWTUser{
+		ID:       user.ID,
+		Email:    user.Email,
+		Password: user.Password,
+	}, nil
 }
-

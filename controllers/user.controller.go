@@ -11,7 +11,7 @@ func Register(ctx *fiber.Ctx) error {
 
 	user, err := services.Register(registerRequest)
 	if err != nil {
-		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		return ctx.Status(fiber.StatusConflict).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 	}
@@ -28,7 +28,7 @@ func Login(ctx *fiber.Ctx) error {
 	token, err := services.Login(loginRequest)
 
 	if err != nil {
-		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		return ctx.Status(fiber.StatusConflict).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 	}
