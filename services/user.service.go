@@ -20,7 +20,7 @@ func Register(registerRequest dtos.RegisterRequest) (*models.User, error) {
 		Password: hashedPassword,
 	}
 
-	createdUser, err := repositories.Create(user)
+	createdUser, err := repositories.CreateUser(user)
 	if err != nil {
 		return nil, err
 	}
@@ -29,16 +29,16 @@ func Register(registerRequest dtos.RegisterRequest) (*models.User, error) {
 }
 
 func Login(loginRequest dtos.LoginRequest) (string, error) {
-	password, err := repositories.GetPasswordByEmail(loginRequest.Email)
+	user, err := repositories.GetUserCredentialsByEmail(loginRequest.Email)
 	if err != nil {
 		return "", errors.New("Invalid email or password.")
 	}
 
-	if err := CheckPassword(loginRequest.Password, password); err != nil {
+	if err := CheckPassword(loginRequest.Password, user.Password); err != nil {
 		return "", err
 	}
 
-	token, err := GenerateJWT(loginRequest.Email)
+	token, err := GenerateJWT(user)
 	if err != nil {
 		return "", err
 	}

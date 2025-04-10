@@ -18,20 +18,18 @@ func ValidateBody[T any]() fiber.Handler {
 		}
 
 		if err := validate.Struct(body); err != nil {
-			
+
 			return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error":   "Validation failed.",
 				"details": validationErrorsToJSON(err),
 			})
 		}
 
-		ctx.Locals("body",body)
-
+		ctx.Locals("body", body)
 
 		return ctx.Next()
 	}
 }
-
 
 func validationErrorsToJSON(err error) map[string]string {
 	errorsMap := make(map[string]string)
