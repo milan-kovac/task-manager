@@ -22,3 +22,13 @@ func CreateTask(createTaskRequest dtos.CreateTaskRequest, userId uint) (*models.
 
 	return createdTask, nil
 }
+
+func GetTask(id int) (*models.Task, error) {
+	task, err := repositories.GetTaskById(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return task, nil
+}

@@ -14,5 +14,13 @@ func RegisterTaskRoutes(app *fiber.App) {
 		"/",
 		middlewares.AuthMiddleware(),
 		middlewares.ValidateBody[dtos.CreateTaskRequest](),
-		controllers.CreateTask)
+		controllers.CreateTask,
+	)
+
+	taskRoutes.Get(
+		"/:id",
+		middlewares.ValidateIdParam(),
+		middlewares.AuthMiddleware(),
+		controllers.GetTask,
+	)
 }
