@@ -15,15 +15,14 @@ import (
 
 var DB *gorm.DB
 
-
-func Connect(){
+func Connect() {
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPassword, dbHost, dbPort, dbName)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUser, dbPassword, dbHost, dbPort, dbName)
 
 	connection, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -45,8 +44,7 @@ func Connect(){
 	DB = connection
 }
 
-
-func  Close(){
+func Close() {
 	if DB != nil {
 		sqlDB, err := DB.DB()
 		if err != nil {

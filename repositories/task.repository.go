@@ -12,3 +12,13 @@ func CreateTask(task *models.Task) (*models.Task, error) {
 
 	return task, nil
 }
+
+func GetTaskById(id int) (*models.Task, error) {
+	var task models.Task
+
+	if err := database.DB.Where("id = ?", id).First(&task).Error; err != nil {
+		return nil, err
+	}
+
+	return &task, nil
+}
