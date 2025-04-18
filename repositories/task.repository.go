@@ -22,3 +22,13 @@ func GetTaskById(id int) (*models.Task, error) {
 
 	return &task, nil
 }
+
+func GetAllTasks() ([]models.Task, error) {
+	var tasks []models.Task
+
+	if err := database.DB.Find(&tasks).Error; err != nil {
+		return nil, err
+	}
+
+	return tasks, nil
+}
