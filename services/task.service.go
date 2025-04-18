@@ -32,3 +32,13 @@ func GetTask(id int) (*models.Task, error) {
 
 	return task, nil
 }
+
+func GetTasks() ([]models.Task, error) {
+	tasks, err := repositories.GetAllTasks()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return tasks, nil
+}

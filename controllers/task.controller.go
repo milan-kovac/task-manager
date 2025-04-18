@@ -36,7 +36,22 @@ func GetTask(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.JSON(fiber.Map{
-		"message": "Task successfully created.",
+		"message": "Task successfully fetched.",
 		"task":    task,
+	})
+}
+
+func GetTasks(ctx *fiber.Ctx) error {
+	tasks, err := services.GetTasks()
+
+	if err != nil {
+		return ctx.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "Tasks not found.",
+		})
+	}
+
+	return ctx.JSON(fiber.Map{
+		"message": "Tasks successfully fetched.",
+		"tasks":   tasks,
 	})
 }
