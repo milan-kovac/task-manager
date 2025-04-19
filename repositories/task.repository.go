@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"fmt"
+
 	"github.com/task-manager/database"
 	"github.com/task-manager/models"
 )
@@ -31,4 +33,20 @@ func GetAllTasks() ([]models.Task, error) {
 	}
 
 	return tasks, nil
+}
+
+func DeleteTaskById(id int) error {
+	result := database.DB.Delete(&models.Task{}, id)
+
+	fmt.Print(result.RowsAffected)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("Task not found.")
+	}
+
+	return nil
 }

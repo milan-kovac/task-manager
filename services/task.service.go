@@ -42,3 +42,11 @@ func GetTasks() ([]models.Task, error) {
 
 	return tasks, nil
 }
+
+func DeleteTask(id int) error {
+	err := repositories.DeleteTaskById(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
