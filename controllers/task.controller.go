@@ -71,3 +71,21 @@ func DeleteTask(ctx *fiber.Ctx) error {
 		"message": "Task successfully deleted.",
 	})
 }
+
+func UpdateTask(ctx *fiber.Ctx) error {
+	var updateTaskRequest dtos.UpdateTaskRequest = ctx.Locals("body").(dtos.UpdateTaskRequest)
+	id := ctx.Locals("id").(int)
+
+	updatedTask, err := services.UpdateteTask(id, updateTaskRequest)
+
+	if err != nil {
+		return ctx.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"error": "Task not found.",
+		})
+	}
+
+	return ctx.JSON(fiber.Map{
+		"message": "Task successfully updated.",
+		"task":    updatedTask,
+	})
+}

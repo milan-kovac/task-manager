@@ -50,3 +50,13 @@ func DeleteTask(id int) error {
 	}
 	return nil
 }
+
+func UpdateteTask(id int, updateTaskRequest dtos.UpdateTaskRequest) (*models.Task, error) {
+	task, err := repositories.UpdateTask(id, updateTaskRequest)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return task, nil
+}

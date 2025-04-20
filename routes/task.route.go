@@ -37,4 +37,12 @@ func RegisterTaskRoutes(app *fiber.App) {
 		controllers.DeleteTask,
 	)
 
+	taskRoutes.Patch(
+		"/:id",
+		middlewares.ValidateIdParam(),
+		middlewares.AuthMiddleware(),
+		middlewares.ValidateBody[dtos.UpdateTaskRequest](),
+		controllers.UpdateTask,
+	)
+
 }
