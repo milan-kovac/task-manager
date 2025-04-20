@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/task-manager/database"
+	"github.com/task-manager/dtos"
 	"github.com/task-manager/models"
 )
 
@@ -38,8 +39,6 @@ func GetAllTasks() ([]models.Task, error) {
 func DeleteTaskById(id int) error {
 	result := database.DB.Delete(&models.Task{}, id)
 
-	fmt.Print(result.RowsAffected)
-
 	if result.Error != nil {
 		return result.Error
 	}
@@ -49,4 +48,17 @@ func DeleteTaskById(id int) error {
 	}
 
 	return nil
+}
+
+func UpdateTask(id int, updateTaskRequest dtos.UpdateTaskRequest) (*models.Task, error) {
+	if err := database.DB.Model(&models.Task{}).Where("id = ?", id).Updates(updateTaskRequest).Error; err != nil {
+		return nil, err
+	}
+
+	var updatedTask models.Task
+	if err := database.DB.First(&updatedTask, id).Error; err != nil {
+		return nil, err
+	}
+
+	return &updatedTask, nil
 }
